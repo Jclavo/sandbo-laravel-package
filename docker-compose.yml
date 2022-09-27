@@ -1,0 +1,46 @@
+version: '3.5'
+
+services: 
+
+    sandbox-laravel-package:
+      image: sandbox-laravel-package
+      container_name: profiles-sandbox-laravel-package
+      build: 
+        context: ./
+        dockerfile: docker/php/php.dockerfile
+      volumes:
+        - ./src:/var/www/html
+        - ./docker/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+        #-  /var/www/html/vendor # to not share node_modules
+      ports: 
+        - ${API_PORT}:8000
+      networks: 
+        - sandbox-laravel-package-backend-net
+        - db-postgres-net
+      
+      command: php artisan serve --host 0.0.0.0
+      # command:  tail -f /dev/null
+
+    postgres-db-sandbox-laravel-package:
+      image: postgres-db-sandbox-laravel-package
+      container_name: db-sandbox-laravel-package
+      build: 
+        context: ./
+        dockerfile: docker/postgres/postgres.dockerfile
+      environment: 
+        POSTGRES_PASSWORD: password
+      ports:
+        - ${DB_PORT}:5432
+      volumes:
+        - ./docker/postgres/conf/conf.d/my-postgres.conf:/etc/postgresql/postgresql.conf # set configuations
+        - ./docker/postgres/conf/data:/var/lib/postgresql/data #store data : delete it the first time you start the container
+        - ./docker/postgres/conf/scripts:/docker-entrypoint-initdb.d # run scripts inmediatly
+      networks: 
+        - db-postgres-net
+
+networks: 
+  sandbox-laravel-package-backend-net:
+    name: sandbox-laravel-package-backend-net
+  db-postgres-net:
+    external: 
+      name: db-postgres-net # this network needs to be created before start container
