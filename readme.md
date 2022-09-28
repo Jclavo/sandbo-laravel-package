@@ -1,12 +1,12 @@
-#  Template to run laravel api in docker container 
+#  Sandbox for Laravel Package
 
-This is a container to run a template from an API developed on Laravel 8  
+This is a container to run a Sandbox for Laravel Package
 
 # Steps to run it
 
 - clone the project.
 ```bash
-  git clone https://github.com/Jclavo/sandbox-laravel-package-docker.git
+  git clone https://github.com/Jclavo/sandbox-laravel-package
 ```
 
 **DOCKER**
