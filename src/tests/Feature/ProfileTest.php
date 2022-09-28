@@ -214,57 +214,51 @@ class ProfileTest extends TestCase
         $this->assertEquals($profile->fixed, $response['fixed']);
     }
 
-    // /**
-    //  * test_activate_profile
-    //  *
-    //  * @return void
-    //  */
-    // public function test_activate_profile()
-    // {
-    //     $profile = Profile::factory()->create(['activated' => false]);
+    /**
+     * test_activate_profile
+     *
+     * @return void
+     */
+    public function test_activate_profile()
+    {
+        $profile = Profile::factory()->create(['activated' => false]);
 
-    //     $response = $this->get("{$this->endpoint}/activate/{$profile->id}");
+        $response = $this->get("{$this->endpoint}/activate/{$profile->id}");
 
-    //     $response->assertStatus(200)
-    //             ->assertJsonStructure(self::modelStructure());
+        $response->assertStatus(200)
+                ->assertJsonStructure(self::modelStructure());
 
-    //     $this->assertDatabaseHas('profiles', [
-    //         'id' => $profile->id,
-    //         'activated' => true
-    //     ]);
+        $this->assertDatabaseHas('profiles', [
+            'id' => $profile->id,
+            'activated' => true
+        ]);
 
-    //     $response = $response->decodeResponseJson();
-    //     $this->assertEquals($profile->id, $response['id']);
-    //     $this->assertEquals(true, $response['activated']);
-    // }
+        $response = $response->decodeResponseJson();
+        $this->assertEquals($profile->id, $response['id']);
+        $this->assertEquals(true, $response['activated']);
+    }
 
-    // /**
-    //  * test_desactivate_profile
-    //  *
-    //  * @return void
-    //  */
-    // public function test_desactivate_profile()
-    // {
-    //     $profile = Profile::factory()->create();
+    /**
+     * test_desactivate_profile
+     *
+     * @return void
+     */
+    public function test_desactivate_profile()
+    {
+        $profile = Profile::factory()->create();
 
-    //     $response = $this->get("{$this->endpoint}/desactivate/{$profile->id}");
+        $response = $this->get("{$this->endpoint}/desactivate/{$profile->id}");
 
-    //     $response->assertStatus(200)
-    //             ->assertJson([
-    //                 'status' => true,
-    //                 'message' => 'change.activated.status'
-    //             ])
-    //             ->assertJsonStructure([
-    //                 'result' => self::modelStructure()
-    //             ]);
+        $response->assertStatus(200)
+                ->assertJsonStructure(self::modelStructure());
 
-    //     $this->assertDatabaseHas('profiles', [
-    //         'id' => $profile->id,
-    //         'activated' => false
-    //     ]);
+        $this->assertDatabaseHas('profiles', [
+            'id' => $profile->id,
+            'activated' => false
+        ]);
 
-    //     $response = $response['result'];
-    //     $this->assertEquals($profile->id, $response['id']);
-    //     $this->assertEquals(false, $response['activated']);
-    // }
+        $response = $response->decodeResponseJson();
+        $this->assertEquals($profile->id, $response['id']);
+        $this->assertEquals(false, $response['activated']);
+    }
 }
