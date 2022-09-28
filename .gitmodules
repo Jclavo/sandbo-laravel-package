@@ -1,0 +1,3 @@
+[submodule "src/packages/jclavo/profiles"]
+	path = src/packages/jclavo/profiles
+	url = https://github.com/Jclavo/laravel-package-profiles-mc
