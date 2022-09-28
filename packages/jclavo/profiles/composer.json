@@ -1,0 +1,22 @@
+{
+    "name": "jclavo/profiles",
+    "description": "This a package to manage profiles on Ministerio da Cidadania",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Jclavo\\Profiles\\": "src/",
+            "Jclavo\\Profiles\\Database\\Factories\\": "database/factories/"        
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Database\\Factories\\": "database/factories/"
+        }
+    },
+    "authors": [
+        {
+            "name": "jclavo"
+        }
+    ],
+    "require": {}
+}
