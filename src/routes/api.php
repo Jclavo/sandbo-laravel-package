@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Users
 Route::resource('users', UserController::class);
+
+// Profiles
+Route::resource('profiles', ProfileController::class);
+Route::get('profiles/activate/{profile_id}', [ProfileController::class, 'activate']);
+Route::get('profiles/desactivate/{profile_id}', [ProfileController::class, 'desactivate']);
