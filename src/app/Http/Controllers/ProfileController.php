@@ -136,8 +136,7 @@ class ProfileController extends Controller
     {
         $profile = Profile::findOrFail($id);
 
-        $profile->activated = $status;
-        $profile->save();
+        $profile->changeActivatedStatus($status);
 
         return response()->json(new ProfileResource($profile), 200);
     }
