@@ -30,7 +30,6 @@ class ProfileTest extends TestCase
             'description',
             'activated',
             'fixed',
-            'system_id'
        ];
     }
 
@@ -44,17 +43,11 @@ class ProfileTest extends TestCase
         $response = $this->get($this->endpoint);
 
         $response->assertStatus(200)
-                ->assertJson([
-                    'status' => true,
-                    'message' => 'crud.pagination'
-                ])
                 ->assertJsonStructure([
-                    'result' => [
-                        '*' => self::modelStructure()
-                    ]
+                    '*' => self::modelStructure()
                 ]);
 
-        $this->assertCount($this->records, $response['result']);
+        $this->assertCount($this->records, $response->decodeResponseJson());
     }
 
     /**
@@ -69,13 +62,7 @@ class ProfileTest extends TestCase
         $response = $this->get("{$this->endpoint}/{$profile->id}");
 
         $response->assertStatus(200)
-                ->assertJson([
-                    'status' => true,
-                    'message' => 'crud.read'
-                ])
-                ->assertJsonStructure([
-                    'result' => self::modelStructure()
-                ]);
+                 ->assertJsonStructure(self::modelStructure());
     }
 
     /**
@@ -109,34 +96,25 @@ class ProfileTest extends TestCase
             'name' => $profile->name,
             'description' => $profile->description,
             'activated' => $profile->activated,
-            'fixed' => $profile->fixed,
-            'system_id' => $profile->system_id,
+            'fixed' => $profile->fixed
         ]);
 
         $response->assertStatus(200)
-                ->assertJson([
-                    'status' => true,
-                    'message' => 'crud.create'
-                ])
-                ->assertJsonStructure([
-                    'result' => self::modelStructure()
-                ]);
+                 ->assertJsonStructure(self::modelStructure());
 
 
         $this->assertDatabaseHas('profiles', [
             'name' => $profile->name,
             'description' => $profile->description,
             'activated' => $profile->activated,
-            'fixed' => $profile->fixed,
-            'system_id' => $profile->system_id
+            'fixed' => $profile->fixed
         ]);
 
-        $response = $response['result'];
+        $response = $response->decodeResponseJson();
         $this->assertEquals($profile->name, $response['name']);
         $this->assertEquals($profile->description, $response['description']);
         $this->assertEquals($profile->activated, $response['activated']);
         $this->assertEquals($profile->fixed, $response['fixed']);
-        $this->assertEquals($profile->system_id, $response['system_id']);
     }
 
     /**
@@ -172,35 +150,26 @@ class ProfileTest extends TestCase
             'name' => $profileNew->name,
             'description' => $profile->description,
             'activated' => $profile->activated,
-            'fixed' => $profile->fixed,
-            'system_id' => $profile->system_id
+            'fixed' => $profile->fixed
         ]);
 
         $response->assertStatus(200)
-                ->assertJson([
-                    'status' => true,
-                    'message' => 'crud.update'
-                ])
-                ->assertJsonStructure([
-                    'result' => self::modelStructure()
-                ]);
+                  ->assertJsonStructure(self::modelStructure());
 
         $this->assertDatabaseHas('profiles', [
             'id' => $profile->id,
             'name' => $profileNew->name,
             'description' => $profile->description,
             'activated' => $profile->activated,
-            'fixed' => $profile->fixed,
-            'system_id' => $profile->system_id
+            'fixed' => $profile->fixed
         ]);
 
-        $response = $response['result'];
+        $response = $response->decodeResponseJson();
         $this->assertEquals($profile->id, $response['id']);
         $this->assertEquals($profileNew->name, $response['name']);
         $this->assertEquals($profile->description, $response['description']);
         $this->assertEquals($profile->activated, $response['activated']);
         $this->assertEquals($profile->fixed, $response['fixed']);
-        $this->assertEquals($profile->system_id, $response['system_id']);
     }
 
 
@@ -215,8 +184,7 @@ class ProfileTest extends TestCase
 
         $response->assertStatus(500)
                 ->assertJson([
-                    'status' => false,
-                    'message' => 'No query results for model [App\\Models\\Profile] 0'
+                    'status' => false
                 ]);
     }
 
@@ -232,85 +200,71 @@ class ProfileTest extends TestCase
         $response = $this->delete("{$this->endpoint}/{$profile->id}");
 
         $response->assertStatus(200)
-                ->assertJson([
-                    'status' => true,
-                    'message' => 'crud.delete'
-                ])
-                ->assertJsonStructure([
-                    'result' => self::modelStructure()
-                ]);
+                ->assertJsonStructure(self::modelStructure());
 
         $this->assertDatabaseMissing('profiles', [
             'id' => $profile->id,
         ]);
 
-        $response = $response['result'];
+        $response = $response->decodeResponseJson();
         $this->assertEquals($profile->id, $response['id']);
         $this->assertEquals($profile->name, $response['name']);
         $this->assertEquals($profile->description, $response['description']);
         $this->assertEquals($profile->activated, $response['activated']);
         $this->assertEquals($profile->fixed, $response['fixed']);
-        $this->assertEquals($profile->system_id, $response['system_id']);
     }
 
-    /**
-     * test_activate_profile
-     *
-     * @return void
-     */
-    public function test_activate_profile()
-    {
-        $profile = Profile::factory()->create(['activated' => false]);
+    // /**
+    //  * test_activate_profile
+    //  *
+    //  * @return void
+    //  */
+    // public function test_activate_profile()
+    // {
+    //     $profile = Profile::factory()->create(['activated' => false]);
 
-        $response = $this->get("{$this->endpoint}/activate/{$profile->id}");
+    //     $response = $this->get("{$this->endpoint}/activate/{$profile->id}");
 
-        $response->assertStatus(200)
-                ->assertJson([
-                    'status' => true,
-                    'message' => 'change.activated.status'
-                ])
-                ->assertJsonStructure([
-                    'result' => self::modelStructure()
-                ]);
+    //     $response->assertStatus(200)
+    //             ->assertJsonStructure(self::modelStructure());
 
-        $this->assertDatabaseHas('profiles', [
-            'id' => $profile->id,
-            'activated' => true
-        ]);
+    //     $this->assertDatabaseHas('profiles', [
+    //         'id' => $profile->id,
+    //         'activated' => true
+    //     ]);
 
-        $response = $response['result'];
-        $this->assertEquals($profile->id, $response['id']);
-        $this->assertEquals(true, $response['activated']);
-    }
+    //     $response = $response->decodeResponseJson();
+    //     $this->assertEquals($profile->id, $response['id']);
+    //     $this->assertEquals(true, $response['activated']);
+    // }
 
-    /**
-     * test_desactivate_profile
-     *
-     * @return void
-     */
-    public function test_desactivate_profile()
-    {
-        $profile = Profile::factory()->create();
+    // /**
+    //  * test_desactivate_profile
+    //  *
+    //  * @return void
+    //  */
+    // public function test_desactivate_profile()
+    // {
+    //     $profile = Profile::factory()->create();
 
-        $response = $this->get("{$this->endpoint}/desactivate/{$profile->id}");
+    //     $response = $this->get("{$this->endpoint}/desactivate/{$profile->id}");
 
-        $response->assertStatus(200)
-                ->assertJson([
-                    'status' => true,
-                    'message' => 'change.activated.status'
-                ])
-                ->assertJsonStructure([
-                    'result' => self::modelStructure()
-                ]);
+    //     $response->assertStatus(200)
+    //             ->assertJson([
+    //                 'status' => true,
+    //                 'message' => 'change.activated.status'
+    //             ])
+    //             ->assertJsonStructure([
+    //                 'result' => self::modelStructure()
+    //             ]);
 
-        $this->assertDatabaseHas('profiles', [
-            'id' => $profile->id,
-            'activated' => false
-        ]);
+    //     $this->assertDatabaseHas('profiles', [
+    //         'id' => $profile->id,
+    //         'activated' => false
+    //     ]);
 
-        $response = $response['result'];
-        $this->assertEquals($profile->id, $response['id']);
-        $this->assertEquals(false, $response['activated']);
-    }
-
+    //     $response = $response['result'];
+    //     $this->assertEquals($profile->id, $response['id']);
+    //     $this->assertEquals(false, $response['activated']);
+    // }
 }
