@@ -11,19 +11,19 @@ This is a container to run a Sandbox for Laravel Package
 
 **DOCKER**
 
-- Start docker service (optional)
+1. Start docker service (optional)
 ```bash
   sudo service docker start
 ``` 
-- Build container
+1. Build container
 ```bash
   docker-compose build
 ```
-- **(optional)** If you are running the first time, network needs to be created before start container.
+1. **(optional)** If you are running the first time, network needs to be created before start container.
 ```bash
   docker network create db-postgres-net
 ``` 
-- Start container
+1. Start container
 ```bash
   docker-compose up
   docker-compose up -d (silent mode)
