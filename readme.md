@@ -15,15 +15,22 @@ This is a container to run a Sandbox for Laravel Package
 ```bash
   sudo service docker start
 ``` 
-1. Build container
+2. Build container
 ```bash
   docker-compose build
 ```
-1. **(optional)** If you are running the first time, network needs to be created before start container.
+3. **(optional)** If you are running the first time, network needs to be created before start container.
 ```bash
   docker network create db-postgres-net
 ``` 
-1. Start container
+
+4. Check that Laravel container command section looks like
+```bash
+    command: php artisan serve --host 0.0.0.0
+    # command:  tail -f /dev/null
+```
+
+5. Start container
 ```bash
   docker-compose up
   docker-compose up -d (silent mode)
@@ -31,23 +38,55 @@ This is a container to run a Sandbox for Laravel Package
 
 **BACKEND**
 
-- Due to it is a submodule, check that you are in the right branch.
-- Copy `.env.*` files (the standalone .env only will have the environment's name)
-- Access container by ssh.
+1. Due to it is a submodule, check that you are in the right branch.
+2. Create `.env` file base on `.env.example`
+
+3. uncomment command to keep run container and comment the other on `docker-compose.yml` file
 ```bash
-    docker exec -it profiles-sandbox-laravel-package /bin/ash
+    #command: php artisan serve --host 0.0.0.0
+    command:  tail -f /dev/null
 ```
-- Run migrations and seeders.
+
+4. Start container (complete steps are explained in the last section)
+```bash
+  docker-compose up
+```
+
+5. Access container by ssh.
+```bash
+    docker exec -it profiles-mc-api /bin/ash
+```
+6. Install dependencies, it means folver /vendor will be created.
+```bash
+    composer install
+```
+
+7. Run migrations and seeders.
 ```bash
     php artisan migrate --seed
 ```
-- To check that everything is ok access to url.
 
+8. Stop container
 ```bash
-    http://0.0.0.0:8160/
+  docker-compose down
+```
+9. Check that Laravel container command section looks like
+```bash
+    command: php artisan serve --host 0.0.0.0
+    # command:  tail -f /dev/null
+```
+10. Start container 
+```bash
+  docker-compose up
 ```
 
-- To check that API is working ok access to url.
+11. To check that everything is ok access to url.
+
+```bash
+    http://0.0.0.0:8160
+```
+
+12. To check that API is working ok access to url.
 
 ```bash
   http://0.0.0.0:8160/api/users
@@ -55,13 +94,13 @@ This is a container to run a Sandbox for Laravel Package
 
 **DATABASE**
 
-- Check folder `/postgres/data` exist, if delete it and create again else only create it `(before start container)`.
-- Check if migrations on laravel were run.
-- Using your favorite ID connect to DB.
+1. Check folder `/postgres/data` exist, if delete it and create again else only create it `(before start container)`.
+2. Check if migrations on laravel were run.
+3. Using your favorite ID connect to DB.
     | ID        | VALUE         | 
     | :-------- | :--------     | 
     | host      | `localhost`   | 
-    | dbname    | `laravel_api_template`| 
+    | dbname    | `laravel_sandbox_package`| 
     | dbuser    | `postgres`    | 
     | dbpass    | `password`    | 
     | port      | `5440`        | 
@@ -76,4 +115,4 @@ This is a container to run a Sandbox for Laravel Package
 
 ## Author
 
-- [@jclavo](https://github.com/Jclavo)
+- [JClavo]
