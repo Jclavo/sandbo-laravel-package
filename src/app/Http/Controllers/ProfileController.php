@@ -36,10 +36,7 @@ class ProfileController extends Controller
             'name' => ['required', 'max:45'],
             'description' => ['nullable', 'max:200'],
             'activated' => ['nullable', 'boolean'],
-            'fixed' => ['nullable', 'boolean'],
-            'system_id' => ['required', 
-                            Rule::exists('systems', 'id')
-                        ]             
+            'fixed' => ['nullable', 'boolean']           
         ]);
 
         if ($validator->fails()) {
@@ -51,13 +48,10 @@ class ProfileController extends Controller
         $profile->description = $request->description;
         $profile->activated = $request->activated ?? true;
         $profile->fixed = $request->fixed ?? false;
-        $profile->system_id = $request->system_id;
         $profile->save();
 
-        return $this->sendResponse(
-            new ProfileResource($profile),
-            "crud.create"
-        );
+        $response = new ProfileResource($profile);
+        return response()->json($response, 200);
     }
 
     /**
@@ -69,11 +63,9 @@ class ProfileController extends Controller
     public function show(int $id)
     {
         $profile = Profile::findOrFail($id);
-                
-        return $this->sendResponse(
-            new ProfileResource($profile),
-            'crud.read'
-        );
+        $response = new ProfileResource($profile);
+
+        return response()->json($response, 200);
     }
 
     /**
@@ -89,10 +81,7 @@ class ProfileController extends Controller
             'name' => ['required', 'max:45'],
             'description' => ['nullable', 'max:200'],
             'activated' => ['nullable', 'boolean'],
-            'fixed' => ['nullable', 'boolean'],
-            'system_id' => ['required', 
-                            Rule::exists('systems', 'id')
-                        ]
+            'fixed' => ['nullable', 'boolean']
         ]);
 
         if ($validator->fails()) {
@@ -104,13 +93,9 @@ class ProfileController extends Controller
         $profile->description = $request->description;
         $profile->activated = $request->activated ?? true;
         $profile->fixed = $request->fixed ?? false;
-        $profile->system_id = $request->system_id;
         $profile->save();
 
-        return $this->sendResponse(
-            new ProfileResource($profile),
-            "crud.update"
-        );
+        return response()->json(new ProfileResource($profile), 200);
     }
 
     /**
@@ -125,10 +110,7 @@ class ProfileController extends Controller
 
         $profile->delete();
 
-        return $this->sendResponse(
-            new ProfileResource($profile),
-            'crud.delete'
-        );
+        return response()->json(new ProfileResource($profile), 200);
     }
 
     /**
@@ -157,10 +139,7 @@ class ProfileController extends Controller
         $profile->activated = $status;
         $profile->save();
 
-        return $this->sendResponse(
-            new ProfileResource($profile),
-            'change.activated.status'
-        );
+        return response()->json(new ProfileResource($profile), 200);
     }
 
 }
