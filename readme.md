@@ -54,7 +54,7 @@ This is a container to run a Sandbox for Laravel Package
 
 5. Access container by ssh.
 ```bash
-    docker exec -it profiles-mc-api /bin/ash
+    docker exec -it profiles-sandbox-laravel-package /bin/ash
 ```
 6. Install dependencies, it means folver /vendor will be created.
 ```bash
