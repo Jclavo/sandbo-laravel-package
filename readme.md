@@ -36,6 +36,39 @@ This is a container to run a Sandbox for Laravel Package
   docker-compose up -d (silent mode)
 ```
 
+**PACKAGE**
+
+1. clone the package as submodule
+
+```bash
+  git submodule add [`git-repository`] packages/[vendor-name]/[package-name]
+```
+2. Add package's provider on `app.php` from your project
+
+```php
+
+    'providers' => [
+        ...
+        /*
+        * Package Service Providers...
+        */
+        [vendor-name]/[package-name]\Providers\[provider-name]::class,
+        ...
+    ]
+```
+
+3. Add package's alias on `src/composer.json` from your project
+
+```json
+  "autoload": {
+        "psr-4": {
+            ...
+            "[vendor-name]\\[package-name]\\": "packages/[vendor-name]/[package-name]/src/",
+            "[vendor-name]\\[package-name]\\Database\\Factories\\": "packages/[vendor-name]/[package-name]/database/factories/"
+        }
+    },
+```
+
 **BACKEND**
 
 1. Due to it is a submodule, check that you are in the right branch.
